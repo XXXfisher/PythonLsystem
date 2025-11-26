@@ -1,5 +1,6 @@
 import dearpygui.dearpygui as dpg
 import math
+import random
 
 
 #------------presets----------------
@@ -13,7 +14,7 @@ def generate_l_system(axiom, rules, iterations):
     return current_string
 
 
-def interpret_l_system(l_system_string, angle, length, start_pos):
+def interpret_l_system(l_system_string, angle, length, start_pos, stochastic=False):
     
     x, y = start_pos
     heading = math.radians(-90)
@@ -22,15 +23,23 @@ def interpret_l_system(l_system_string, angle, length, start_pos):
     
 
     for command in l_system_string:
+        # current_length = length
+        angle_variation = angle
+        length_variation = length
+
+        if stochastic:
+            length_variation = length * random.uniform(0.8, 1.2)
+            angle_variation = angle * random.uniform(0.8, 1.2)
+        
         if command == "F":
-            new_x = x + length*math.cos(heading)
-            new_y = y + length*math.sin(heading)
+            new_x = x + length_variation*math.cos(heading)
+            new_y = y + length_variation*math.sin(heading)
             lines.append(((x, y), (new_x, new_y)))
             x, y = new_x, new_y
         elif command == "+":
-            heading -= math.radians(angle)
+            heading -= math.radians(angle_variation)
         elif command == "-":
-            heading += math.radians(angle)
+            heading += math.radians(angle_variation)
         elif command == "[":
             stack.append((x, y, heading))
         elif command == "]":
@@ -117,6 +126,8 @@ def draw_l_system_callback(sender, app_data, user_data):
     angle = dpg.get_value("##angle_slider")
     length = dpg.get_value("##length_slider")
 
+    is_stochastic = dpg.get_value("##stochastic_checkbox") 
+
     rules = {
         "F": dpg.get_value("##rule_input_f"), 
         "X": dpg.get_value("##rule_input_x")
@@ -129,7 +140,7 @@ def draw_l_system_callback(sender, app_data, user_data):
 
         start_x = 500
         start_y = 600
-        lines_data = interpret_l_system(l_system_string, angle, length, (start_x, start_y))
+        lines_data = interpret_l_system(l_system_string, angle, length, (start_x, start_y), stochastic=is_stochastic)
 
         dpg.draw_text((10, 10), f"L-System string length: {len(l_system_string)}", parent="##drawlist_tag")
         
@@ -174,6 +185,9 @@ def setup_gui():
         
          with dpg.child_window(width=300, height=200):   
             dpg.add_text("Features")
+            dpg.add_separator()
+            dpg.add_checkbox(label="Stochastic Mode", tag="##stochastic_checkbox", callback=draw_l_system_callback)
+            dpg.add_text("(Randomizes angle & length)", color=[150, 150, 150], wrap=280)
 
         # Use child_window to wrap drawlist
         with dpg.child_window(width=1000, height=700):
