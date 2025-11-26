@@ -3,14 +3,15 @@ import turtle
 axiom = "F"
 
 rules = {
-    "F": "FF+[+F-F-F]-[-F+F+F]"
+    "F": "F[+F]F"
 }
 
-iterations = 4
+iterations = 1
 
-length = 5
+length = 150
 
 angle = 25
+
 
 def generate_lsystem(axiom, rules, iterations):
     current = axiom
@@ -45,6 +46,7 @@ def main():
     screen.bgcolor("white")
     t = turtle.Turtle()
     t.speed(0)
+    t.width(5)
     t.left(90)
     t.penup()
     t.goto(0, -200)
