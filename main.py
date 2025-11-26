@@ -2,6 +2,7 @@ import dearpygui.dearpygui as dpg
 import math
 
 
+#------------presets----------------
 def generate_l_system(axiom, rules, iterations):
     current_string = axiom
     for _ in range(iterations):
@@ -10,6 +11,7 @@ def generate_l_system(axiom, rules, iterations):
             next_string.append(rules.get(char, char))
         current_string = "".join(next_string)
     return current_string
+
 
 def interpret_l_system(l_system_string, angle, length, start_pos):
     
@@ -150,30 +152,33 @@ def setup_gui():
     dpg.show_viewport()   
 
     with dpg.window(tag="Primary Window", label="L-System Drawer", width=1050, height=900):
-        dpg.add_input_text(label="Axiom", default_value="F", tag="##axiom_input", width=500)
-        dpg.add_input_text(label="Rule F", tag="##rule_input_f", width=500)
-        dpg.add_input_text(label="Rule X", tag="##rule_input_x", width=500)
-        dpg.add_slider_int(label="Iterations", default_value=4, min_value=1, max_value=6, tag="##iterations_slider", width=500)
-        dpg.add_slider_int(label="Angle", default_value=25, min_value=0, max_value=90, tag="##angle_slider", width=500)
-        dpg.add_slider_int(label="Length", default_value=5, min_value=1, max_value=20, tag="##length_slider", width=500)
-        
         with dpg.group(horizontal=True):
-            dpg.add_button(label="Preset A", callback=lambda:load_preset("presetA"))
-            dpg.add_button(label="Preset B", callback=lambda:load_preset("presetB"))
-            dpg.add_button(label="Preset C", callback=lambda:load_preset("presetC"))
-            dpg.add_button(label="Preset D", callback=lambda:load_preset("presetD"))
-            dpg.add_button(label="Preset E", callback=lambda:load_preset("presetE"))
-            dpg.add_button(label="Preset F", callback=lambda:load_preset("presetF"))
-            dpg.add_button(label="Preset G", callback=lambda:load_preset("presetG"))
-            dpg.add_button(label="Koch curve", callback=lambda:load_preset("Koch curve"))
-
-            
-
-
-        dpg.add_button(label="Draw L-System", callback=draw_l_system_callback)
+         with dpg.child_window(width=600, height=200):
+          dpg.add_text("Basic L-System Parameters:")
+          dpg.add_input_text(label="Axiom", default_value="F", tag="##axiom_input", width=500)
+          dpg.add_input_text(label="Rule F", tag="##rule_input_f", width=500)
+          dpg.add_input_text(label="Rule X", tag="##rule_input_x", width=500)
+          dpg.add_slider_int(label="Iterations", default_value=4, min_value=1, max_value=6, tag="##iterations_slider", width=500)
+          dpg.add_slider_int(label="Angle", default_value=25, min_value=0, max_value=90, tag="##angle_slider", width=500)
+          dpg.add_slider_int(label="Length", default_value=5, min_value=1, max_value=20, tag="##length_slider", width=500)
+        
+         with dpg.child_window(width=90, height=200):
+             dpg.add_button(label="Preset A", callback=lambda:load_preset("presetA"))
+             dpg.add_button(label="Preset B", callback=lambda:load_preset("presetB"))
+             dpg.add_button(label="Preset C", callback=lambda:load_preset("presetC"))
+             dpg.add_button(label="Preset D", callback=lambda:load_preset("presetD"))
+             dpg.add_button(label="Preset E", callback=lambda:load_preset("presetE"))
+             dpg.add_button(label="Preset F", callback=lambda:load_preset("presetF"))
+             dpg.add_button(label="Preset G", callback=lambda:load_preset("presetG"))
+             dpg.add_button(label="Koch curve", callback=lambda:load_preset("Koch curve"))
+        
+         with dpg.child_window(width=300, height=200):   
+            dpg.add_text("Features")
 
         # Use child_window to wrap drawlist
         with dpg.child_window(width=1000, height=700):
+            dpg.add_text("Press the button below to draw the L-System")
+            dpg.add_button(label="Draw L-System", callback=draw_l_system_callback)
             with dpg.drawlist(width=1000, height=750,tag="##drawlist_tag"):
                 pass
 
