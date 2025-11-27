@@ -40,8 +40,8 @@ def interpret_l_system(l_system_string, angle, length, start_pos, Fluctuation=Fa
         length_variation = length
 
         if Fluctuation:
-            length_variation = length * random.uniform(0.8, 1.2)
-            angle_variation = angle * random.uniform(0.8, 1.2)
+            length_variation = length * random.uniform(0.4, 1.2)
+            angle_variation = angle * random.uniform(0.4, 1.2)
         
         if command == "F":
             new_x = x + length_variation*math.cos(heading)
@@ -234,6 +234,7 @@ def draw_l_system_callback(sender, app_data, user_data):
 def setup_gui():
     dpg.create_context()
     dpg.create_viewport(title='L-System', width=1050, height=900)
+    dpg.show_metrics()
     dpg.setup_dearpygui()
     dpg.show_viewport()   
 
