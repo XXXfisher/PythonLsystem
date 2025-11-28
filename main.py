@@ -117,6 +117,12 @@ def load_preset(json_filename):
     return
 
 
+def modify_param(sender, app_data, user_data):
+    tag, amount = user_data
+    current_val = dpg.get_value(tag)
+    dpg.set_value(tag, current_val + amount)
+    draw_l_system_callback(None, None, None) 
+
 #-----------CALLBACK------------------
 def draw_l_system_callback(sender, app_data, user_data):
 
@@ -252,6 +258,15 @@ def setup_gui():
         dpg.add_key_press_handler(dpg.mvKey_8, callback=lambda: load_preset("koch_curve.json"))
         
         dpg.add_key_press_handler(dpg.mvKey_Spacebar, callback=draw_l_system_callback)
+
+        dpg.add_key_press_handler(dpg.mvKey_Q, callback=modify_param, user_data=["##angle_slider", 1])
+        dpg.add_key_press_handler(dpg.mvKey_E, callback=modify_param, user_data=["##angle_slider", -1])
+    
+        dpg.add_key_press_handler(dpg.mvKey_A, callback=modify_param, user_data=["##length_slider", 1])
+        dpg.add_key_press_handler(dpg.mvKey_D, callback=modify_param, user_data=["##length_slider", -1])
+    
+        dpg.add_key_press_handler(dpg.mvKey_Z, callback=modify_param, user_data=["##iterations_slider", 1])
+        dpg.add_key_press_handler(dpg.mvKey_C, callback=modify_param, user_data=["##iterations_slider", -1])
 
     print("window setup complete...")
     dpg.set_primary_window("Primary Window", True)
