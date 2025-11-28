@@ -1,0 +1,9 @@
+{
+    "axiom": "F++F++F++F++F",
+    "rules": {
+        "F": [["F++F++F+++++F-F++F", 1.0]]
+    },
+    "angle": 36,
+    "iterations": 4,
+    "length": 6
+}
